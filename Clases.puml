@@ -1,0 +1,83 @@
+@startuml
+
+class Users {
+    - id: int
+    - name: String
+    - last_name_p: String
+    - last_name_m: String
+    - domicilio: String
+    - tel: String
+    - sanctions: int
+    - sanc_money: int
+}
+
+class Books {
+    - id: int
+    - title: String
+    - date: String
+    - author: String
+    - category: String
+    - edit: String
+    - lang: String
+    - pages: String
+    - description: String
+    - ejemplares: String
+    - stock: int
+    - available: int
+}
+
+class Lendings {
+    - id: int
+    - user_id: int
+    - book_id: int
+    - date_out: String
+    - date_return: String
+}
+
+' Interfaces DAO
+interface DAOUsers {
+    + registrar(user: Users)
+    + modificar(user: Users)
+    + sancionar(user: Users)
+    + eliminar(userId: int)
+    + listar(name: String)
+    + getUserById(userId: int)
+}
+
+interface DAOBooks {
+    + registrar(book: Books)
+    + modificar(book: Books)
+    + eliminar(bookId: int)
+    + listar(title: String)
+    + getBookById(bookId: int)
+}
+
+interface DAOLendings {
+    + registrar(lending: Lendings)
+    + modificar(lending: Lendings)
+    + getLending(user: Users, book: Books)
+    + listar()
+}
+
+' Implementaciones de las interfaces
+class DAOUsersImpl {
+    .. implements ..> DAOUsers
+}
+
+class DAOBooksImpl {
+    .. implements ..> DAOBooks
+}
+
+class DAOLendingsImpl {
+    .. implements ..> DAOLendings
+}
+
+' Relaciones entre clases e interfaces
+Users "1" -- "0..*" Lendings : tiene
+Books "1" -- "0..*" Lendings : tiene
+
+' Relaciones entre las implementaciones y las interfaces
+DAOUsersImpl --|> DAOUsers
+DAOBooksImpl --|> DAOBooks
+DAOLendingsImpl --|> DAOLendings
+@enduml
